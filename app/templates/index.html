@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hi, {{ user.username}} </h1>
+    {% for fold in folds %}
+    <div><p>
+        {{fold.date_folded}} <br>
+        {{ fold.designer}}, 
+        {{fold.design}} <br> 
+        {{fold.paper_type}}, 
+        {{fold.paper_size}}
+        
+    </p></div>
+    {% endfor %}
+{% endblock %}
