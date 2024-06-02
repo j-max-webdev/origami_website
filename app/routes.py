@@ -1,7 +1,8 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import LoginForm
-
+from app.forms import LoginForm, DesignerForm
+from app.models import Designer
+from app import db
 
 @app.route("/")
 @app.route("/index")
@@ -39,3 +40,19 @@ def login():
               form.username.data, form.remember_me.data))
         return redirect(url_for('index'))
     return render_template("login.html", title="Sign In", form=form)
+
+
+@app.route("/add_designer", methods=["GET", "POST"])
+def add_designer():
+    form = DesignerForm()
+    if form.validate_on_submit():
+        designer = Designer(first_name=form.first_name.data, last_name=form.last_name.data)
+        db.session.add(designer)
+        db.session.commit()
+
+        flash("Designer {} added".format(
+            form.last_name.data))
+        return redirect("/index")
+    return render_template(
+        "add_designer.html", title="Add Designer", form=form
+    )
